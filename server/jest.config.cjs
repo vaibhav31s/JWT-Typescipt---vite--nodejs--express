@@ -11,5 +11,7 @@ module.exports = {
       diagnostics: false,
     },
   },
-  transform: { '\\.ts$': ['ts-jest'] },
+  // @faker-js/faker 10 ships ESM only; let ts-jest compile it to CommonJS.
+  transform: { '\\.[tj]s$': ['ts-jest', { tsconfig: { allowJs: true } }] },
+  transformIgnorePatterns: ['node_modules/(?!@faker-js/faker)'],
 };
