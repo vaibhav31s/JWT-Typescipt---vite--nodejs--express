@@ -63,7 +63,7 @@ describe('Error middlewares', () => {
       expect(next).toHaveBeenCalledWith(
         expect.objectContaining({
           statusCode: error.statusCode,
-          message: httpStatus[error.statusCode],
+          message: (httpStatus as unknown as Record<number, string>)[error.statusCode],
           isOperational: false,
         })
       );

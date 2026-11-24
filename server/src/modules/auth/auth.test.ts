@@ -27,7 +27,7 @@ const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'min
 
 const userOne = {
   _id: new mongoose.Types.ObjectId(),
-  name: faker.name.findName(),
+  name: faker.person.fullName(),
   email: faker.internet.email().toLowerCase(),
   password,
   role: 'user',
@@ -45,7 +45,7 @@ describe('Auth routes', () => {
     let newUser: NewRegisteredUser;
     beforeEach(() => {
       newUser = {
-        name: faker.name.findName(),
+        name: faker.person.fullName(),
         email: faker.internet.email().toLowerCase(),
         password: 'password1',
       };
@@ -209,7 +209,8 @@ describe('Auth routes', () => {
       });
 
       const dbRefreshTokenDoc = await Token.findOne({ token: res.body.tokens.refresh.token });
-      expect(dbRefreshTokenDoc).toMatchObject({ type: tokenTypes.REFRESH, user: userOne._id, blacklisted: false });
+      expect(dbRefreshTokenDoc).toMatchObject({ type: tokenTypes.REFRESH, blacklisted: false });
+      expect(String(dbRefreshTokenDoc?.user)).toBe(String(userOne._id));
 
       const dbRefreshTokenCount = await Token.countDocuments();
       expect(dbRefreshTokenCount).toBe(1);

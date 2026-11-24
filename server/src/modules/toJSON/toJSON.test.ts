@@ -86,7 +86,7 @@ describe('toJSON plugin', () => {
         toJSON: {
           transform: (_doc, ret) => {
             // eslint-disable-next-line no-param-reassign, @typescript-eslint/dot-notation
-            delete ret['private'];
+            delete (ret as Record<string, unknown>)['private'];
           },
         },
       }
